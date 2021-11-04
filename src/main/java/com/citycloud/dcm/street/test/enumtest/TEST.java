@@ -19,7 +19,9 @@ public class TEST {
 
         List<Integer> integers = new ArrayList<>();
         System.out.println(integers.contains(1));
-
+  float f=3.4f;
+  short s1=1;
+  s1+=s1+1;
 
     }
 

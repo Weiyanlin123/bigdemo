@@ -47,10 +47,10 @@
     </settings>
 
 
-    <!--<typeAliases>-->
-        <!--<package name="com.citycloud.store.entity"/>-->
-        <!--<package name="com.citycloud.store.entity.dto"/>-->
-    <!--</typeAliases>-->
+    <typeAliases>
+        <package name="com.citycloud.dcm.street.param"/>
+
+    </typeAliases>
 
 
     <!-- 插件配置 -->

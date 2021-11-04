@@ -3,10 +3,7 @@ package com.city.testmap;
 import com.city.cloud.B;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +14,10 @@ public class TestMap {
 
     public static void main(String[] args) {
 
-
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(1);
+        stringBuffer.append("2");
+        System.out.println(stringBuffer.toString());
         B b = new B();
 
         b.setAge("aaa");
@@ -53,6 +53,10 @@ public class TestMap {
 //                .collect(Collectors.toMap(c -> c.getKey(), c -> c.getValue()));
 //
 
+
+        HashSet<Object> objects = new HashSet<>();
+
+        objects.add(1);
 
         List<Map.Entry<String, Integer>> listMap = maps
                 .entrySet()

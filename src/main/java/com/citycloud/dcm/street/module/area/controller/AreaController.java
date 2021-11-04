@@ -1,12 +1,13 @@
 package com.citycloud.dcm.street.module.area.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.citycloud.dcm.street.config.SingerService;
 import com.citycloud.dcm.street.config.guava.GuavaCache;
 import com.citycloud.dcm.street.mapper.AaaMapper;
 import com.citycloud.dcm.street.mapper.UserMapper;
 import com.citycloud.dcm.street.module.area.service.ExcelService;
-import com.citycloud.dcm.street.param.Sourceip;
+import com.citycloud.dcm.street.module.area.service.TestAService;
+import com.citycloud.dcm.street.module.area.service.TestBService;
+import com.citycloud.dcm.street.param.Aaa;
 import com.citycloud.dcm.street.vo.JsonData;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Email;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @Slf4j
@@ -41,12 +40,19 @@ public class AreaController {
     SingerService singerService;
 
     @Autowired
+    TestBService     testBService;
+
+    @Autowired
+    TestAService  testAService;
+
+
+    @Autowired
     private RedisTemplate<String, Object> redisStrTemplate;
 
     @Autowired
     private GuavaCache guavaCache;
 
-    @Autowired
+    @Value("#{aaaMapper}")
     private AaaMapper aaaMapper;
 
     @Email
@@ -70,34 +76,41 @@ public class AreaController {
 
     @ApiOperation("测试")
     @ResponseBody
-    @GetMapping("/findAll")
-    public JsonData listQueryDistrictStreets() throws Exception {
-        List<Map<String, Object>> all = userMapper.findAll();
+    @PostMapping("/findAll")
+    public JsonData listQueryDistrictStreets( Aaa aaa) throws Exception {
+        List<Aaa> aaas = aaaMapper.queryAll(null);
+
 //        for(int i=0;i<100;i++){
 //
 //
-//        }
-        redisStrTemplate.opsForValue().set("nihao", JSON.toJSONString(all), 15, TimeUnit.MINUTES);
-        Sourceip sourceip = guavaCache.get("sourceip", "100000");
-        Sourceip sourceip2 = guavaCache.get("sourceip", "100000");
-        Sourceip sourceip3 = guavaCache.get("sourceip", "100000");
-        System.out.println(sourceip3);
-        System.out.println(sourceip2);
-        System.out.println(sourceip);
+////        }
+//        redisStrTemplate.opsForValue().set("nihao", JSON.toJSONString(all), 15, TimeUnit.MINUTES);
+//        Sourceip sourceip = guavaCache.get("sourceip", "100000");
+//        Sourceip sourceip2 = guavaCache.get("sourceip", "100000");
+//        Sourceip sourceip3 = guavaCache.get("sourceip", "100000");
+//        System.out.println(sourceip3);
+//        System.out.println(sourceip2);
+//        System.out.println(sourceip);
 
         //String suggestion0 = SrtategyContent.getProperty("suggestion0");
-        return new JsonData(sourceip + "========" + sourceip2 + "===========" + sourceip3);
+    //    return new JsonData(sourceip + "========" + sourceip2 + "===========" + sourceip3);
+
+        String b = testBService.getB();
+
+        String a = testAService.getA();
+
+        return new JsonData(a+b);
 }
 
-
-    /**
-     * test mybatis-generator
-     */
+    @ApiOperation("测试")
     @ResponseBody
-    @GetMapping(value = "/testMybatis")
-    public JsonData testMybatis() {
-         return new JsonData(aaaMapper.selectByPrimaryKey(1L));
+    @PostMapping("/save")
+    public JsonData save( Aaa aaa) throws Exception {
+        int insert = aaaMapper.insert(aaa);
+        return new JsonData(insert);
     }
+
+
 
 
 

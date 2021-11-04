@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SingerService {
     private static final Logger logger = LoggerFactory.getLogger(SingerService.class);
+
     @Autowired
     private Singer singer;
     public String sing(){

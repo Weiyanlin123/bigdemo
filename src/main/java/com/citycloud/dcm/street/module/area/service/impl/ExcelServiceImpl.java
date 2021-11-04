@@ -1,5 +1,6 @@
 package com.citycloud.dcm.street.module.area.service.impl;
 
+import com.citycloud.dcm.street.config.SingerService;
 import com.citycloud.dcm.street.mapper.InputCityOperationLogMapper;
 import com.citycloud.dcm.street.module.area.service.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class ExcelServiceImpl implements ExcelService {
 
     @Autowired
     InputCityOperationLogMapper inputCityOperationLogMapper;
+    @Autowired
+    SingerService singerService;
 
     @Override
     public void getExcel(HttpServletRequest request, HttpServletResponse response) throws Exception{

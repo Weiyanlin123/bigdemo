@@ -1,93 +1,148 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.citycloud.dcm.street.mapper.AaaMapper" >
-  <resultMap id="BaseResultMap" type="com.citycloud.dcm.street.param.Aaa" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="INTEGER" />
-    <result column="age" property="age" jdbcType="INTEGER" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="score" property="score" jdbcType="INTEGER" />
+  <resultMap id="AaaMap" type="com.citycloud.dcm.street.param.Aaa" >
+    <result property="id" column="id" jdbcType="INTEGER"/>
+    <result property="name" column="name" jdbcType="INTEGER"/>
+    <result property="age" column="age" jdbcType="INTEGER"/>
+    <result property="address" column="address" jdbcType="VARCHAR"/>
+    <result property="score" column="score" jdbcType="INTEGER"/>
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    <result property="updateTime" column="update_time" jdbcType="VARCHAR"/>
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, age, address, score
+  <sql id="Base_Column_List">
+    id, name, age, address, score, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from aaa
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from aaa
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.citycloud.dcm.street.param.Aaa" >
-    insert into aaa (id, name, age, 
-      address, score)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=INTEGER}, #{age,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.citycloud.dcm.street.param.Aaa" >
-    insert into aaa
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+
+  <!--新增所有列-->
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true" parameterType="Aaa">
+    INSERT INTO aaa
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="name != null" >
+      <if test="name != null">
         name,
       </if>
-      <if test="age != null" >
+      <if test="age != null">
         age,
       </if>
-      <if test="address != null" >
+      <if test="address != null and address != ''">
         address,
       </if>
-      <if test="score != null" >
+      <if test="score != null">
         score,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=INTEGER},
+      <if test="name != null">
+        #{name},
       </if>
-      <if test="age != null" >
-        #{age,jdbcType=INTEGER},
+      <if test="age != null">
+        #{age},
       </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
+      <if test="address != null and address != ''">
+        #{address},
       </if>
-      <if test="score != null" >
-        #{score,jdbcType=INTEGER},
+      <if test="score != null">
+        #{score},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        #{updateTime},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.citycloud.dcm.street.param.Aaa" >
+  <!--通过主键修改数据-->
+  <update id="update" parameterType="Aaa">
     update aaa
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=INTEGER},
+    <set>
+      <if test="name != null">
+        name = #{name},
       </if>
-      <if test="age != null" >
-        age = #{age,jdbcType=INTEGER},
+      <if test="age != null">
+        age = #{age},
       </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
+      <if test="address != null and address != ''">
+        address = #{address},
       </if>
-      <if test="score != null" >
-        score = #{score,jdbcType=INTEGER},
+      <if test="score != null">
+        score = #{score},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = #{updateTime},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.citycloud.dcm.street.param.Aaa" >
-    update aaa
-    set name = #{name,jdbcType=INTEGER},
-      age = #{age,jdbcType=INTEGER},
-      address = #{address,jdbcType=VARCHAR},
-      score = #{score,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+
+  <!--通过主键删除-->
+  <delete id="deleteById">
+    delete from aaa where id = #{id}
+  </delete>
+
+  <!--查询单个-->
+  <select id="queryById" resultMap="AaaMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aaa
+    where id = #{id}
+  </select>
+
+  <!--通过实体作为筛选条件查询-->
+  <select id="queryAll" parameterType="Aaa" resultMap="AaaMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aaa
+    <where>
+      <if test="id != null">
+        and id = #{id}
+      </if>
+      <if test="name != null">
+        and name = #{name}
+      </if>
+      <if test="age != null">
+        and age = #{age}
+      </if>
+      <if test="address != null and address != ''">
+        and address = #{address}
+      </if>
+      <if test="score != null">
+        and score = #{score}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        and update_time = #{updateTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="queryCountByPage" resultType="int">
+    select
+    count(*)
+    from aaa
+  </select>
+
+  <select id="queryListByPage" resultMap="AaaMap">
+    select
+    <include refid="Base_Column_List"/>
+    from aaa
+    limit #{offset}, #{limit}
+  </select>
 </mapper>
